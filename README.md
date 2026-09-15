@@ -67,8 +67,6 @@ elmo-hikes/
 
 ## Contributors
 - **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.
-- **Nick** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
-**Steven** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
 
