@@ -61,9 +61,13 @@ elmo-hikes/
 ---
 
 ## Contributors
+HEAD
 
 - **Steven** - BCIT CST Student with a passion of k-pop music and travelling around the world. Fun fact: Can speak Indonesian.
 - **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.
+
+- **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like wacthing Spy x Famliy
+develop
 
 ---
 
