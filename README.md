@@ -1,13 +1,12 @@
 # Elmo Hikes
 
-
 ## Overview
+
 Elmo Hikes is a client-side JavaScript web application that helps users discover and explore hiking trails. The app displays a curated list of hike trails, each with details such as name, location, difficulty, and an image. Users can browse the list and mark their favorite trails for easy access later.
 
 Developed for the COMP 1800 course, this project applies User-Centred Design practices and agile project management, and demonstrates integration with Firebase backend services for storing user favorites.
 
 ---
-
 
 ## Features
 
@@ -18,7 +17,6 @@ Developed for the COMP 1800 course, this project applies User-Centred Design pra
 
 ---
 
-
 ## Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
@@ -27,7 +25,6 @@ Developed for the COMP 1800 course, this project applies User-Centred Design pra
 - **Database**: Firestore
 
 ---
-
 
 ## Usage
 
@@ -46,7 +43,6 @@ Once the application is running:
 
 ---
 
-
 ## Project Structure
 
 ```
@@ -64,12 +60,16 @@ elmo-hikes/
 
 ---
 
-
 ## Contributors
 - **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like the colour blue
+HEAD
+
+- **Steven** - BCIT CST Student with a passion of k-pop music and travelling around the world to see different cultures. Fun fact: Can speak Indonesian.
+- **Nicholas Lewis** - BCIT CST Student with a passion for sports and being active. Fun fact: Loves staying up late playing video games. I also enjoy watching FC Barcelona weekly!
+- **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like wacthing Spy x Famliy
+develop
 
 ---
-
 
 ## Acknowledgments
 
@@ -79,8 +79,8 @@ elmo-hikes/
 
 ---
 
-
 ## Limitations and Future Work
+
 ### Limitations
 
 - Limited trail details (e.g., no live trail conditions).
@@ -93,7 +93,6 @@ elmo-hikes/
 - Create a dark mode for better usability in low-light conditions.
 
 ---
-
 
 ## License
 
