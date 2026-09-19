@@ -61,7 +61,6 @@ elmo-hikes/
 ---
 
 ## Contributors
-- **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like the colour blue
 HEAD
 
 - **Steven** - BCIT CST Student with a passion of k-pop music and travelling around the world to see different cultures. Fun fact: Can speak Indonesian.
