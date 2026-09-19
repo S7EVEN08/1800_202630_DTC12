@@ -66,7 +66,7 @@ elmo-hikes/
 
 
 ## Contributors
-- **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like wacthing Spy x Famliy
+- **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like the colour blue
 
 ---
 
