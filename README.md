@@ -67,6 +67,8 @@ elmo-hikes/
 
 ## Contributors
 - **Karen Law** - Loves playing online games, watching anime and a bcit student. Fun fact I'm used to be an international student and I'm a slow learner and worker.I like wacthing Spy x Famliy
+- **Nicholas Lewis** - BCIT CST Student with a passion for sports and being active. Fun fact: Loves staying up late playing video games.
+- **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
 
