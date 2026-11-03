@@ -1,3 +1,18 @@
+import { doc, getDoc, enableNetwork } from "firebase/firestore";
+import { db } from "./firebaseConfig.js";
+const guideRef = doc(db, "guides", "wSkeKV7ezkcEwA5ZL5Mg");
+enableNetwork(db)
+  .then(() => getDoc(guideRef))
+  .then(function (guideSnap) {
+    if (guideSnap.exists()) {
+      console.log("Guide data:", guideSnap.data());
+    } else {
+      console.log("Guide not found!");
+    }
+  })
+  .catch(function (error) {
+    console.error("Error reading guide:", error);
+  });
 const nextButton = document.getElementById("next-btn");
 const previousButton = document.getElementById("previous-btn");
 const stepCounter = document.getElementById("step-counter");
@@ -22,7 +37,6 @@ nextButton.addEventListener("click", function () {
   }
 });
 
-
 previousButton.addEventListener("click", function () {
   if (currentStep > 1) {
     currentStep--;
@@ -38,4 +52,3 @@ previousButton.addEventListener("click", function () {
     }
   }
 });
-
