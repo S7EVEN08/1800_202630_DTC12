@@ -2,31 +2,107 @@
 <html lang="en">
 
 <head>
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App">
+    <title>Older and Wiser</title>
+    <meta name="comp1800 template" content="Older and Wiser">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Other libraries go here -->
-
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 </head>
 
 <body>
 
-    <!------------------------------>
-    <!-- Your HTML Layout go here -->
-    <!------------------------------>
-    <!-- Stuff for body goes here -->
+    <!-- Start Navbar -->
+    <nav class="navbar navbar-expand-sm bg-success navbar-dark">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="index.html">
+                Older and Wiser
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="help-topics.html">
+                            Help Topics
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="guide.html">
+                            Guides
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ask-for-help.html">
+                            Ask for Help
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+    <!-- End Navbar -->
 
 
-    <!---------------------------------------------->
-    <!-- Your own JavaScript functions go here    -->
-    <!---------------------------------------------->
+    <!-- Start Welcome / Hero -->
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
 
-    <!-- Link to scripts of your own -->
-    <!-- <script type="module" src="./src/main.js"></script> -->
+            <h1 class="display-5 fw-bold">
+                Older and Wiser!
+            </h1>
+
+            <p class="col-md-8 fs-4">
+                Learn how to use unfamiliar technology with simple,
+                step-by-step guidance.
+            </p>
+
+            <!-- Start Call to Action -->
+            <a href="login.html" class="btn btn-success btn-lg">
+                Login
+            </a>
+            <!-- End Call to Action -->
+
+        </div>
+    </div>
+    <!-- End Welcome / Hero -->
+
+
+    <!-- Bootstrap JavaScript -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 
