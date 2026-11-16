@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Older and Wiser - Guide</title>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+
+        <!-- Shared Navbar -->
+        <script type="module" src="/src/components/site-navbar.js"></script>
+    </head>
+
+    <body>
+
+        <!-- Start Navbar -->
+        <site-navbar></site-navbar>
+        <!-- End Navbar -->
+
+        <!-- Guide Content -->
+        <main class="container mt-5" style="max-width: 450px">
+            <h1>Using Video Calls</h1>
+
+            <section class="card p-4 mt-4">
+
+                <p id="step-counter">Step 1 of 3</p>
+
+                <h2 id="step-title">Open your Phone App</h2>
+
+                <div class="text-center my-4">
+                    <i id="step-icon" class="bi bi-phone" style="font-size: 80px;"></i>
+                </div>
+
+                <p id="step-description">
+                    Select the phone app icon at the bottom of the home page
+                </p>
+
+                <div class="d-flex gap-2">
+                    <button id="previous-btn" class="btn btn-secondary flex-fill">
+                        Previous
+                    </button>
+
+                    <button id="next-btn" class="btn btn-primary flex-fill">
+                        Next
+                    </button>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Bootstrap JavaScript (Mobile Hamburger Menu) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+        </script>
+
+        <!-- Firebase Guide JavaScript -->
+        <script type="module" src="/src/calls.js"></script>
+
+    </body>
+
+</html>

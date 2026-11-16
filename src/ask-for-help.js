@@ -1,120 +1,269 @@
-import { collection, addDoc } from "firebase/firestore";
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp
+} from "firebase/firestore";
+
 import { db } from "./firebaseConfig.js";
 
+// Get HTML elements
 const descriptionInput = document.getElementById("problem-description");
 const submitButton = document.getElementById("submit-help");
 
-submitButton.addEventListener("click", function () {
+// ==========================================
+// SUBMIT A PROBLEM
+// ==========================================
+
+submitButton.addEventListener("click", async function () {
+
+  // Get value from the text area
   const description = descriptionInput.value.trim();
 
+  // Check if the description is empty
   if (description === "") {
     alert("Please describe your problem.");
     return;
   }
 
-  addDoc(collection(db, "helpRequests"), {
-    description: description,
-    photoUrl: "",
-  })
-    .then(function () {
-      alert("Help request submitted successfully!");
-      descriptionInput.value = "";
-    })
-    .catch(function (error) {
-      console.error("Error submitting request:", error);
-      alert("Failed to submit help request.");
+  try {
+
+    // Save the problem to Firestore
+    await addDoc(collection(db, "helpRequests"), {
+      description: description,
+      photoUrl: "",
+      timestamp: serverTimestamp()
     });
+
+    alert("Help request submitted successfully!");
+
+    // Clear the text area
+    descriptionInput.value = "";
+
+    // Refresh the latest problems
+    displayProblems();
+
+  } catch (error) {
+    console.error("Error submitting problem:", error);
+    alert("Failed to submit help request.");
+  }
+
 });
 
+
+// ==========================================
+// SUBMIT A SOLUTION
+// ==========================================
+
 async function submitReview(event) {
+
+  // Prevent page from refreshing
   event.preventDefault();
 
-  //get value from front end
-  const newReview = {
-     title: document.getElementById("reviewTitle").value,
-     rating: Number(document.getElementById("reviewRating").value),
-     text: document.getElementById("reviewText").value,
-     hikeDocID: hikeId,
-     userID: currentUser.uid,
-     userName: currentUser.displayName || currentUser.email,
-     timestamp: serverTimestamp(),
-   };
+  // Get values from the form
+  const title = document.getElementById("reviewTitle").value.trim();
+  const text = document.getElementById("reviewText").value.trim();
+
+  // Check if the fields are empty
+  if (title === "" || text === "") {
+    alert("Please fill in both fields.");
+    return;
+  }
+
+  // Create a solution object
+  const newSolution = {
+    title: title,
+    text: text,
+    timestamp: serverTimestamp()
+  };
 
   try {
-    await addDoc(collection(db, "reviews"), newReview);
-    event.target.reset(); // clear the form
-    displayReviews(); // re-read the list so the new review shows (Step 1.3)
+
+    // Save solution to Firestore
+    await addDoc(collection(db, "solutions"), newSolution);
+
+    alert("Solution submitted successfully!");
+
+    // Clear the form
+    event.target.reset();
+
+    // Refresh the solutions
+    displaySolutions();
+
   } catch (error) {
-    alert(
-      `Error saving review:\n${error.code || ""}\n${error.message || error}`,
-    );
+
+    console.error("Error saving solution:", error);
+    alert("Failed to submit solution.");
+
   }
 }
 
-//Feedback
-async function submitReview(event) {
-  event.preventDefault();
 
-  //get value from front end
-  const newReview = {
-     title: document.getElementById("reviewTitle").value,
-     rating: Number(document.getElementById("reviewRating").value),
-     text: document.getElementById("reviewText").value,
-     hikeDocID: hikeId,
-     userID: currentUser.uid,
-     userName: currentUser.displayName || currentUser.email,
-     timestamp: serverTimestamp(),
-   };
+// Listen for solution form submission
+document.getElementById("reviewForm")
+  .addEventListener("submit", submitReview);
+
+
+// ==========================================
+// DISPLAY LATEST PROBLEMS
+// ==========================================
+
+async function displayProblems() {
+
+  const container = document.getElementById("reviews-go-here");
+
+  // Clear old problems
+  container.innerHTML = "";
 
   try {
-    await addDoc(collection(db, "reviews"), newReview);
-    event.target.reset(); // clear the form
-    displayReviews(); // re-read the list so the new review shows (Step 1.3)
-  } catch (error) {
-    alert(
-      `Error saving review:\n${error.code || ""}\n${error.message || error}`,
-    );
-  }
-}
 
-console.log("submit clicked");
-
-document.getElementById("reviewForm").addEventListener("submit", submitReview);
-
-async function displayReviews() {
-    const container = document.getElementById("reviews-go-here");
-    const template = document.getElementById("reviewTemplate");
-    container.innerHTML = "";     // start empty so we don't show duplicates
-
-    // Build the question we want to ask Firestore
-    const q = query(
-        collection(db, "reviews"),
-        where("hikeDocID", "==", hikeId),    // only THIS hike
-        // orderBy("timestamp", "desc"),         // newest first
-        // limit(5)                        // optional: only the latest 5 (try it after Step 1.4)
+    // Read all documents from helpRequests
+    const querySnapshot = await getDocs(
+      collection(db, "helpRequests")
     );
 
-    try {
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-            container.innerHTML = "<p class='text-muted'>No reviews yet. Be the first!</p>";
-            return;
-        }
-
-        querySnapshot.forEach(doc => {
-            const review = doc.data();
-            const card = template.content.cloneNode(true);
-
-            card.querySelector(".review-title").textContent = `${review.title} ${"★".repeat(review.rating)}`;
-            const date = review.timestamp ? review.timestamp.toDate().toLocaleDateString() : "just now";
-            card.querySelector(".review-meta").textContent = `${review.userName} · ${date}`;
-            card.querySelector(".review-text").textContent = review.text;
-
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error("Error loading reviews:", error);
+    // Check if there are any problems
+    if (querySnapshot.empty) {
+      container.textContent = "No problems submitted yet.";
+      return;
     }
+
+    // Convert documents into an array
+    const problems = querySnapshot.docs.map(doc => doc.data());
+
+    // Sort by newest first
+    problems.sort((a, b) =>
+      (b.timestamp?.toMillis() || 0) -
+      (a.timestamp?.toMillis() || 0)
+    );
+
+    // Display each problem
+    problems.forEach(problem => {
+
+      // Create a Bootstrap card
+      const card = document.createElement("div");
+      card.className = "card mb-3";
+
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+
+      // Problem description
+      const description = document.createElement("p");
+      description.className = "card-text";
+      description.textContent = problem.description;
+
+      // Date
+      const date = document.createElement("small");
+      date.className = "text-muted";
+
+      date.textContent = problem.timestamp
+        ? problem.timestamp.toDate().toLocaleString()
+        : "Just now";
+
+      // Add everything to the card
+      cardBody.appendChild(description);
+      cardBody.appendChild(date);
+
+      card.appendChild(cardBody);
+      container.appendChild(card);
+
+    });
+
+  } catch (error) {
+
+    console.error("Error loading problems:", error);
+    container.textContent = "Failed to load problems.";
+
+  }
+
 }
-displayReviews();
+
+
+// ==========================================
+// DISPLAY RECENT SOLUTIONS
+// ==========================================
+
+async function displaySolutions() {
+
+  const container = document.getElementById("solutions-go-here");
+
+  // Clear old solutions
+  container.innerHTML = "";
+
+  try {
+
+    // Read all solutions from Firestore
+    const querySnapshot = await getDocs(
+      collection(db, "solutions")
+    );
+
+    // Check if there are solutions
+    if (querySnapshot.empty) {
+      container.textContent = "No solutions submitted yet.";
+      return;
+    }
+
+    // Convert documents into an array
+    const solutions = querySnapshot.docs.map(doc => doc.data());
+
+    // Sort by newest first
+    solutions.sort((a, b) =>
+      (b.timestamp?.toMillis() || 0) -
+      (a.timestamp?.toMillis() || 0)
+    );
+
+    // Display each solution
+    solutions.forEach(solution => {
+
+      // Create card
+      const card = document.createElement("div");
+      card.className = "card mb-3";
+
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+
+      // Solution title
+      const title = document.createElement("h5");
+      title.className = "card-title";
+      title.textContent = solution.title;
+
+      // Solution description
+      const text = document.createElement("p");
+      text.className = "card-text";
+      text.textContent = solution.text;
+
+      // Date
+      const date = document.createElement("small");
+      date.className = "text-muted";
+
+      date.textContent = solution.timestamp
+        ? solution.timestamp.toDate().toLocaleString()
+        : "Just now";
+
+      // Add elements to the card
+      cardBody.appendChild(title);
+      cardBody.appendChild(text);
+      cardBody.appendChild(date);
+
+      card.appendChild(cardBody);
+      container.appendChild(card);
+
+    });
+
+  } catch (error) {
+
+    console.error("Error loading solutions:", error);
+    container.textContent = "Failed to load solutions.";
+
+  }
+
+}
+
+
+// ==========================================
+// LOAD DATA WHEN PAGE OPENS
+// ==========================================
+
+displayProblems();
+displaySolutions();
