@@ -1,6 +1,12 @@
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "./firebaseConfig.js";
 
+// Ask for Help
 const descriptionInput = document.getElementById("problem-description");
 const submitButton = document.getElementById("submit-help");
 
@@ -26,95 +32,86 @@ submitButton.addEventListener("click", function () {
     });
 });
 
-async function submitReview(event) {
+// Leave a Solution
+async function submitSolution(event) {
   event.preventDefault();
 
-  //get value from front end
-  const newReview = {
-     title: document.getElementById("reviewTitle").value,
-     rating: Number(document.getElementById("reviewRating").value),
-     text: document.getElementById("reviewText").value,
-     hikeDocID: hikeId,
-     userID: currentUser.uid,
-     userName: currentUser.displayName || currentUser.email,
-     timestamp: serverTimestamp(),
-   };
+  // Get values from the form
+  const newSolution = {
+    problem: document.getElementById("solutionProblem").value,
+    solution: document.getElementById("solutionText").value,
+    problemTimestamp: serverTimestamp(),
+    solutionTimestamp: serverTimestamp(),
+  };
 
   try {
-    await addDoc(collection(db, "reviews"), newReview);
-    event.target.reset(); // clear the form
-    displayReviews(); // re-read the list so the new review shows (Step 1.3)
+    // Save to Firebase
+    await addDoc(collection(db, "solutions"), newSolution);
+
+    // Clear the form
+    event.target.reset();
+
+    // Display the updated list
+    displaySolutions();
   } catch (error) {
     alert(
-      `Error saving review:\n${error.code || ""}\n${error.message || error}`,
+      `Error saving solution:\n${error.code || ""}\n${error.message || error}`,
     );
   }
 }
 
-//Feedback
-async function submitReview(event) {
-  event.preventDefault();
+// Submit solution form
+document
+  .getElementById("solutionForm")
+  .addEventListener("submit", submitSolution);
 
-  //get value from front end
-  const newReview = {
-     title: document.getElementById("reviewTitle").value,
-     rating: Number(document.getElementById("reviewRating").value),
-     text: document.getElementById("reviewText").value,
-     hikeDocID: hikeId,
-     userID: currentUser.uid,
-     userName: currentUser.displayName || currentUser.email,
-     timestamp: serverTimestamp(),
-   };
+// Display Problems and Solutions
+async function displaySolutions() {
+  const container = document.getElementById("problems-go-here");
+  const template = document.getElementById("reviewTemplate");
+
+  container.innerHTML = "";
 
   try {
-    await addDoc(collection(db, "reviews"), newReview);
-    event.target.reset(); // clear the form
-    displayReviews(); // re-read the list so the new review shows (Step 1.3)
+    // Read solutions from Firebase
+    const querySnapshot = await getDocs(collection(db, "solutions"));
+
+    querySnapshot.forEach((doc) => {
+      const solution = doc.data();
+
+      if (!solution.problem || !solution.solution) {
+        return;
+      }
+
+      const card = template.content.cloneNode(true);
+
+      // Display problem
+      card.querySelector(".solution-problem").textContent = solution.problem;
+
+      // Display problem timestamp
+      const problemDate = solution.problemTimestamp
+        ? solution.problemTimestamp.toDate().toLocaleString()
+        : "Date unavailable";
+
+      card.querySelector(".problem-date").textContent = problemDate;
+
+      // Display solution
+      card.querySelector(".solution-text").textContent = solution.solution;
+
+      // Display solution timestamp
+      const solutionDate = solution.solutionTimestamp
+        ? solution.solutionTimestamp.toDate().toLocaleString()
+        : "Date unavailable";
+
+      card.querySelector(".solution-date").textContent = solutionDate;
+
+      // Add card to webpage
+      container.appendChild(card);
+    });
   } catch (error) {
-    alert(
-      `Error saving review:\n${error.code || ""}\n${error.message || error}`,
-    );
+    console.error("Error loading solutions:", error);
   }
 }
 
-console.log("submit clicked");
-
-document.getElementById("reviewForm").addEventListener("submit", submitReview);
-
-async function displayReviews() {
-    const container = document.getElementById("reviews-go-here");
-    const template = document.getElementById("reviewTemplate");
-    container.innerHTML = "";     // start empty so we don't show duplicates
-
-    // Build the question we want to ask Firestore
-    const q = query(
-        collection(db, "reviews"),
-        where("hikeDocID", "==", hikeId),    // only THIS hike
-        // orderBy("timestamp", "desc"),         // newest first
-        // limit(5)                        // optional: only the latest 5 (try it after Step 1.4)
-    );
-
-    try {
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-            container.innerHTML = "<p class='text-muted'>No reviews yet. Be the first!</p>";
-            return;
-        }
-
-        querySnapshot.forEach(doc => {
-            const review = doc.data();
-            const card = template.content.cloneNode(true);
-
-            card.querySelector(".review-title").textContent = `${review.title} ${"★".repeat(review.rating)}`;
-            const date = review.timestamp ? review.timestamp.toDate().toLocaleDateString() : "just now";
-            card.querySelector(".review-meta").textContent = `${review.userName} · ${date}`;
-            card.querySelector(".review-text").textContent = review.text;
-
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error("Error loading reviews:", error);
-    }
-}
-displayReviews();
+// Display saved solutions when page loads
+displaySolutions();
