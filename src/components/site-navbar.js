@@ -13,17 +13,17 @@ class SiteNavbar extends HTMLElement {
 
   renderNavbar() {
     this.innerHTML = `
-      <!-- Navbar: single source of truth -->
-      <nav class="navbar navbar-expand-sm bg-success navbar-dark">
-        <div class="container">
+      <!-- Shared Navbar -->
+      <nav class="navbar navbar-expand-lg bg-success navbar-dark">
+        <div class="container-fluid px-3">
 
           <!-- Brand -->
           <a class="navbar-brand fw-bold" href="index.html">
             Older and Wiser
           </a>
 
-          <!-- Login/Logout and Mobile Menu -->
-          <div class="d-flex align-items-center gap-2 order-sm-2">
+          <!-- Login/Logout and Mobile Hamburger -->
+          <div class="d-flex align-items-center gap-2 order-lg-2 ms-auto">
 
             <!-- Firebase Authentication Controls -->
             <div
@@ -35,7 +35,7 @@ class SiteNavbar extends HTMLElement {
 
             <!-- Hamburger Menu -->
             <button
-              class="navbar-toggler"
+              class="navbar-toggler d-block d-lg-none"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -50,26 +50,34 @@ class SiteNavbar extends HTMLElement {
 
           <!-- Navigation Links -->
           <div
-            class="collapse navbar-collapse order-sm-1"
+            class="collapse navbar-collapse flex-lg-grow-0 order-lg-1"
             id="navbarSupportedContent"
           >
 
             <ul class="navbar-nav me-auto">
 
               <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="index.html">
+                  Home
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="help-topics.html">Help Topics</a>
+                <a class="nav-link" href="help-topics.html">
+                  Help Topics
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="help-topics.html">Guides</a>
+                <a class="nav-link" href="help-topics.html">
+                  Guides
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="ask-for-help.html">Ask for Help</a>
+                <a class="nav-link" href="ask-for-help.html">
+                  Ask for Help
+                </a>
               </li>
 
             </ul>
@@ -132,3 +140,9 @@ class SiteNavbar extends HTMLElement {
 }
 
 customElements.define("site-navbar", SiteNavbar);
+
+
+
+
+
+
