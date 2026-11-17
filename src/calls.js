@@ -1,18 +1,45 @@
-import { doc, getDoc, enableNetwork } from "firebase/firestore";
+import {
+    doc,
+    getDoc,
+    updateDoc,
+    increment
+} from "firebase/firestore";
+
 import { db } from "./firebaseConfig.js";
+
+const helpTopicRef = doc(db, "HelpTopics", "videocalls");
 const guideRef = doc(db, "guides", "wSkeKV7ezkcEwA5ZL5Mg");
-enableNetwork(db)
-    .then(() => getDoc(guideRef))
-    .then(function (guideSnap) {
+
+async function displayGuideInfo() {
+    try {
+        // Read the guide document
+        const guideSnap = await getDoc(guideRef);
+
         if (guideSnap.exists()) {
-            console.log("Guide data:", guideSnap.data());
+            const guide = guideSnap.data();
+
+            // Increase views by 1 in Firestore
+            await updateDoc(guideRef, {
+                views: increment(1)
+            });
+
+            // Display the updated view count
+            document.getElementById("viewCount").textContent =
+                (guide.views || 0) + 1;
+
         } else {
             console.log("Guide not found!");
         }
-    })
-    .catch(function (error) {
-        console.error("Error reading guide:", error);
-    });
+
+    } catch (error) {
+        console.error("Error updating views:", error);
+    }
+}
+
+// Run when the page opens
+displayGuideInfo();
+
+
 
 const nextButton = document.getElementById("next-btn");
 const previousButton = document.getElementById("previous-btn");
