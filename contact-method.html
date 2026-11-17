@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Contact Method - Older and Wiser</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Navbar -->
+    <script
+      type="module"
+      src="/src/components/site-navbar.js"
+    ></script>
+  </head>
+
+  <body>
+    <site-navbar></site-navbar>
+
+    <!-- Contact Method -->
+    <main class="container mt-5 text-center">
+
+      <h1 class="mb-5">Contact Method</h1>
+
+      <p class="fs-4 mb-4">
+        How would you like to receive a response?
+      </p>
+
+      <!-- Contact Options -->
+      <div class="d-flex flex-column align-items-center gap-4 mt-5">
+
+        <!-- Text Message -->
+        <input
+          type="radio"
+          class="btn-check"
+          name="contactMethod"
+          id="text-method"
+          value="text"
+        />
+
+        <label
+          class="btn btn-outline-success w-75 p-3 fw-bold fs-5"
+          for="text-method"
+        >
+          <i id="text-icon" class="bi bi-circle me-2"></i>
+          <i class="bi bi-chat-dots-fill me-2"></i>
+          Text Message
+        </label>
+
+        <!-- Phone Call -->
+        <input
+          type="radio"
+          class="btn-check"
+          name="contactMethod"
+          id="phone-method"
+          value="phone"
+        />
+
+        <label
+          class="btn btn-outline-success w-75 p-3 fw-bold fs-5"
+          for="phone-method"
+        >
+          <i id="phone-icon" class="bi bi-circle me-2"></i>
+          <i class="bi bi-telephone-fill me-2"></i>
+          Phone Call
+        </label>
+
+      </div>
+
+      <!-- Next Button -->
+      <div class="text-center mt-5 pt-5">
+        <button
+          type="button"
+          class="btn btn-success w-75 fw-bold fs-4 py-3"
+          id="next-btn"
+        >
+          Next
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase JavaScript -->
+    <script
+      type="module"
+      src="/src/contact-method.js"
+    ></script>
+  </body>
+</html>
+
