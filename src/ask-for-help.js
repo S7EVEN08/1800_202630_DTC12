@@ -1,3 +1,4 @@
+
 import {
   collection,
   addDoc,
@@ -22,9 +23,11 @@ submitButton.addEventListener("click", function () {
     description: description,
     photoUrl: "",
   })
-    .then(function () {
-      alert("Help request submitted successfully!");
+    .then(function (docRef) {
       descriptionInput.value = "";
+
+      // Go to Contact Method page with the document ID
+      location.href = "contact-method.html?docID=" + docRef.id;
     })
     .catch(function (error) {
       console.error("Error submitting request:", error);
