@@ -48,6 +48,8 @@ const stepCounter = document.getElementById("step-counter");
 const stepTitle = document.getElementById("step-title");
 const stepDescription = document.getElementById("step-description");
 const stepIcon = document.getElementById("step-icon");
+const guideCard = document.getElementById("guide-card");
+const completeScreen = document.getElementById("complete-screen");
 
 let currentStep = 1;
 
@@ -71,29 +73,56 @@ const steps = [
 ];
 
 // Update the guide based on current step
+
 function updateStep() {
+
+    // Show completion screen after final step
+    if (currentStep > steps.length) {
+
+        // Hide the guide
+        guideCard.classList.add("d-none");
+
+        // Show completion screen
+        completeScreen.classList.remove("d-none");
+
+        return;
+    }
+
+    // Show normal guide steps
+    guideCard.classList.remove("d-none");
+    completeScreen.classList.add("d-none");
 
     const step = steps[currentStep - 1];
 
-    stepCounter.textContent = `Step ${currentStep} of ${steps.length}`;
+    stepCounter.textContent =
+        `Step ${currentStep} of ${steps.length}`;
 
     stepTitle.textContent = step.title;
     stepDescription.textContent = step.description;
 
-    // Change Bootstrap icon
+    // Change icon
     stepIcon.className = `bi ${step.icon}`;
 
-    // Disable buttons at first and last steps
+    // Disable Previous on Step 1
     previousButton.disabled = currentStep === 1;
-    nextButton.disabled = currentStep === steps.length;
+
+    // Change Next button text on the final step
+    if (currentStep === steps.length) {
+        nextButton.textContent = "Complete Guide";
+    } else {
+        nextButton.textContent = "Next";
+    }
 }
+
 
 // NEXT BUTTON
 nextButton.addEventListener("click", function () {
-    if (currentStep < steps.length) {
+
+    if (currentStep <= steps.length) {
         currentStep++;
         updateStep();
     }
+
 });
 
 // PREVIOUS BUTTON
