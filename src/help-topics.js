@@ -13,19 +13,28 @@ getDocsFromServer(guidesRef)
   .catch(function (error) {
     console.error("Error loading guides:", error);
   });
+
 const searchInput = document.getElementById("search-input");
 const helpTopics = document.querySelectorAll(".help-topic");
 
+// Search bar
 searchInput.addEventListener("input", function () {
-  const searchText = searchInput.value.toLowerCase();
+
+  const searchText = searchInput.value.toLowerCase().trim();
 
   helpTopics.forEach(function (topic) {
+
     const topicName = topic.textContent.toLowerCase();
 
     if (topicName.includes(searchText)) {
-      topic.parentElement.classList.remove("d-none");
+      // Show matching topic
+      topic.classList.remove("d-none");
     } else {
-      topic.parentElement.classList.add("d-none");
+      // Hide non-matching topic
+      topic.classList.add("d-none");
     }
+
   });
+
 });
+
