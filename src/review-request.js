@@ -84,7 +84,8 @@ submitButton.addEventListener("click", async function () {
       submittedAt: serverTimestamp(),
     });
 
-    alert("Your help request has been submitted successfully!");
+    // Go to Request Confirmation page
+    location.href = "request-confirmation.html?docID=" + requestId;
 
   } catch (error) {
     console.error("Error submitting request:", error);

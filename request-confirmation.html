@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request Confirmation - Older and Wiser</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <!-- Checkmark Animation -->
+    <style>
+      .checkmark {
+        display: inline-block;
+        animation: pop 0.6s ease-out;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+
+        65% {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .checkmark {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-light">
+    <site-navbar></site-navbar>
+
+    <main class="container py-5 text-center" style="max-width: 450px;">
+
+      <!-- Animated Confirmation Icon -->
+      <i class="bi bi-check-circle-fill text-success checkmark"
+         style="font-size: 100px;"></i>
+
+      <!-- Confirmation Heading -->
+      <h1 class="fs-3 fw-bold mt-3">
+        Your help request has been sent!
+      </h1>
+
+      <hr />
+
+      <!-- Response Message -->
+      <p class="fs-5 my-5">
+        A technician will respond to you shortly.
+      </p>
+
+      <!-- Back to Home Button -->
+      <a href="main.html" class="btn btn-success btn-lg w-100 fw-bold">
+        Back to Home
+      </a>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/src/request-confirmation.js"></script>
+  </body>
+</html>
