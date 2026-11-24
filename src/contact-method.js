@@ -56,4 +56,6 @@ nextButton.addEventListener("click", async function () {
     console.error("Error saving contact method:", error);
     alert("Failed to save contact method.");
   }
+    // Go to Review Request page
+    location.href = "review-request.html?docID=" + requestId;
 });

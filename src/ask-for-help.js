@@ -1,47 +1,95 @@
-
+import "./components/site-navbar.js";
 import {
   collection,
   addDoc,
   getDocs,
-  serverTimestamp
+  serverTimestamp,
 } from "firebase/firestore";
 
 import { db } from "./firebaseConfig.js";
 
-// ==========================================
-// ASK FOR HELP
-// ==========================================
-
 const descriptionInput = document.getElementById("problem-description");
 const submitButton = document.getElementById("submit-help");
+const photoInput = document.getElementById("problem-image");
 
-// Submit a problem
+// Show photo preview
+function showPreview(event) {
+  const file = event.target.files[0];
+  const preview = document.getElementById("imagePreview");
+
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.classList.remove("d-none");
+  }
+}
+
+// Run showPreview when a photo is selected
+photoInput.addEventListener("change", showPreview);
+
+// Shrink a photo and convert it into Base64 text
+function resizeImage(file, maxSize = 600) {
+  return new Promise(function (resolve, reject) {
+    const img = new Image();
+
+    img.onload = function () {
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+
+      canvas.getContext("2d").drawImage(
+        img, 0, 0, canvas.width, canvas.height
+      );
+
+      resolve(canvas.toDataURL("image/jpeg", 0.7));
+    };
+
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// Submit help request
 submitButton.addEventListener("click", async function () {
-
   const description = descriptionInput.value.trim();
+  const photo = photoInput.files[0];
 
   if (description === "") {
     alert("Please describe your problem.");
     return;
   }
 
+  submitButton.disabled = true;
+
   try {
-    // Save the problem to Firestore
+    // Resize photo and convert it into Base64
+    const photoUrl = photo ? await resizeImage(photo) : "";
+
+    // Check image size before saving to Firestore
+    if (photoUrl.length > 800000) {
+      alert("The image is too large. Please select another image.");
+      return;
+    }
+
+    // Save help request to Firebase
     const docRef = await addDoc(collection(db, "helpRequests"), {
       description: description,
-      photoUrl: "",
-      timestamp: serverTimestamp()
+      photoUrl: photoUrl,
+      timestamp: serverTimestamp(),
     });
 
-    // Clear the text area
+    // Clear the inputs
     descriptionInput.value = "";
+    photoInput.value = "";
 
-    // Redirect to Contact Method page
+    // Go to Contact Method page with the document ID
     location.href = "contact-method.html?docID=" + docRef.id;
-
   } catch (error) {
-    console.error("Error submitting problem:", error);
+    console.error("Error submitting request:", error);
     alert("Failed to submit help request.");
+  } finally {
+    submitButton.disabled = false;
   }
 });
 

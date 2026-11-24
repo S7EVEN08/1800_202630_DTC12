@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,9 +39,9 @@
   </head>
 
   <body>
-
-    <!-- Navbar -->
+    <!-- Start Navbar -->
     <site-navbar></site-navbar>
+    <!-- End Navbar -->
 
     <!-- Ask for Help -->
     <main class="container mt-5" style="max-width: 450px;">
@@ -61,11 +60,16 @@
 
       <input type="file" class="form-control" id="problem-image" accept="image/*">
 
-      <!-- Submit Button -->
+      <!-- NEW: Photo preview -->
+      <img
+        id="imagePreview"
+        class="img-fluid rounded mt-2 d-none"
+        alt="Preview"
+      />
+
       <button type="button" id="submit-help" class="btn btn-success w-100 mt-3">
         Submit
       </button>
-
     </main>
 
     <!-- Leave a Solution -->
@@ -143,5 +147,4 @@
     <script type="module" src="/src/ask-for-help.js"></script>
 
   </body>
-
 </html>
