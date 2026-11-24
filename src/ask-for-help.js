@@ -4,6 +4,9 @@ import {
   addDoc,
   getDocs,
   serverTimestamp,
+  doc,
+  getDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 import { db } from "./firebaseConfig.js";
@@ -11,6 +14,53 @@ import { db } from "./firebaseConfig.js";
 const descriptionInput = document.getElementById("problem-description");
 const submitButton = document.getElementById("submit-help");
 const photoInput = document.getElementById("problem-image");
+
+// Get the document ID from the URL
+const params = new URLSearchParams(window.location.search);
+const requestId = params.get("docID");
+
+// Store the previous photo
+let previousPhoto = "";
+// Load previous help request
+async function loadRequest() {
+  if (!requestId) {
+    return;
+  }
+
+  submitButton.disabled = true;
+
+  try {
+    const requestRef = doc(db, "helpRequests", requestId);
+    const requestSnap = await getDoc(requestRef);
+
+    if (requestSnap.exists()) {
+      const request = requestSnap.data();
+
+      // Restore problem description
+      descriptionInput.value = request.description;
+
+      // Restore previous photo
+      previousPhoto = request.photoUrl || "";
+
+      if (previousPhoto) {
+        const preview = document.getElementById("imagePreview");
+
+        preview.src = previousPhoto;
+        preview.classList.remove("d-none");
+      }
+
+      submitButton.disabled = false;
+    } else {
+      alert("Help request not found.");
+    }
+  } catch (error) {
+    console.error("Error loading request:", error);
+    alert("Failed to load help request.");
+  }
+}
+
+loadRequest();
+
 
 // Show photo preview
 function showPreview(event) {
