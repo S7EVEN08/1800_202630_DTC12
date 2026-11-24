@@ -69,7 +69,7 @@ class SiteNavbar extends HTMLElement {
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="help-topics.html">
+                <a class="nav-link" href="construction.html">
                   Guides
                 </a>
               </li>

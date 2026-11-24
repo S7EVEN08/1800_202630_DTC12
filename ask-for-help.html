@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask for Help - Older and Wiser</title>
 
     <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Shared Navbar -->
+    <script type="module" src="/src/components/site-navbar.js"></script>
 
     <style>
       /* Latest Problems section */
@@ -44,28 +44,21 @@
     <!-- End Navbar -->
 
     <!-- Ask for Help -->
-    <main class="container mt-5" style="max-width: 450px">
+    <main class="container mt-5" style="max-width: 450px;">
+
       <h1>Ask for Help</h1>
 
-      <h2 class="h4">Describe Your Problem</h2>
+      <h2 class="h4 mt-4">Describe Your Problem</h2>
 
-      <textarea
-        id="problem-description"
-        class="form-control"
-        rows="5"
-        placeholder="Describe your problem"
-      ></textarea>
+      <!-- Problem Description -->
+      <textarea id="problem-description" class="form-control" rows="5" placeholder="Describe your problem"></textarea>
 
+      <!-- Image Upload -->
       <label for="problem-image" class="form-label mt-3">
         Upload an Image (Optional)
       </label>
 
-      <input
-        type="file"
-        class="form-control"
-        id="problem-image"
-        accept="image/*"
-      />
+      <input type="file" class="form-control" id="problem-image" accept="image/*">
 
       <!-- NEW: Photo preview -->
       <img
@@ -80,56 +73,59 @@
     </main>
 
     <!-- Leave a Solution -->
-    <section class="container mt-4">
+    <section class="container mt-4" style="max-width: 650px;">
+
       <h2>Leave a Solution</h2>
 
       <form id="solutionForm">
-        <div class="mb-3">
-          <label for="solutionProblem" class="form-label"> Problem </label>
 
-          <input
-            type="text"
-            id="solutionProblem"
-            class="form-control"
-            placeholder="e.g. issues with Wi-Fi"
-            required
-          />
+        <div class="mb-3">
+          <label for="solutionProblem" class="form-label">
+            Problem
+          </label>
+
+          <input type="text" id="solutionProblem" class="form-control" placeholder="e.g. Issues with Wi-Fi" required>
         </div>
 
         <div class="mb-3">
-          <label for="solutionText" class="form-label"> Solution </label>
+          <label for="solutionText" class="form-label">
+            Solution
+          </label>
 
-          <textarea
-            id="solutionText"
-            class="form-control"
-            rows="3"
-            required
-          ></textarea>
+          <textarea id="solutionText" class="form-control" rows="3" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-success">Submit Solution</button>
+        <button type="submit" class="btn btn-success">
+          Submit Solution
+        </button>
+
       </form>
     </section>
 
     <!-- Latest Problems -->
-    <section class="container mt-4 mb-5 latest-problems-section">
+    <section class="container mt-4 mb-5 latest-problems-section" style="max-width: 650px;">
+
       <h2>Latest Problems</h2>
 
       <div id="problems-go-here"></div>
+
     </section>
 
-    <!-- Template for Problem and Solution -->
+    <!-- Template for Problems and Solutions -->
     <template id="reviewTemplate">
+
       <div class="card solution-card mb-3">
         <div class="card-body">
+
           <!-- Problem -->
           <h5 class="card-title">
-            Problem: <span class="solution-problem"></span>
+            Problem:
+            <span class="solution-problem"></span>
           </h5>
 
           <small class="problem-date text-muted"></small>
 
-          <hr />
+          <hr>
 
           <!-- Solution -->
           <h5 class="card-title">
@@ -138,14 +134,17 @@
           </h5>
 
           <small class="solution-date text-muted"></small>
+
         </div>
       </div>
+
     </template>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Ask for Help JavaScript -->
+    <!-- Firebase JavaScript -->
     <script type="module" src="/src/ask-for-help.js"></script>
+
   </body>
 </html>

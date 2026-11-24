@@ -8,7 +8,6 @@ import {
 
 import { db } from "./firebaseConfig.js";
 
-// Ask for Help
 const descriptionInput = document.getElementById("problem-description");
 const submitButton = document.getElementById("submit-help");
 const photoInput = document.getElementById("problem-image");
@@ -94,86 +93,137 @@ submitButton.addEventListener("click", async function () {
   }
 });
 
-// Leave a Solution
+
+// ==========================================
+// SUBMIT A SOLUTION
+// ==========================================
+
 async function submitSolution(event) {
+
+  // Prevent the page from refreshing
   event.preventDefault();
 
   // Get values from the form
+  const problem = document.getElementById("solutionProblem").value.trim();
+  const solution = document.getElementById("solutionText").value.trim();
+
+  // Check if fields are empty
+  if (problem === "" || solution === "") {
+    alert("Please fill in both fields.");
+    return;
+  }
+
+  // Create solution object
   const newSolution = {
-    problem: document.getElementById("solutionProblem").value,
-    solution: document.getElementById("solutionText").value,
+    problem: problem,
+    solution: solution,
     problemTimestamp: serverTimestamp(),
-    solutionTimestamp: serverTimestamp(),
+    solutionTimestamp: serverTimestamp()
   };
 
   try {
-    // Save to Firebase
+    // Save solution to Firestore
     await addDoc(collection(db, "solutions"), newSolution);
+
+    alert("Solution submitted successfully!");
 
     // Clear the form
     event.target.reset();
 
-    // Display the updated list
+    // Refresh displayed solutions
     displaySolutions();
+
   } catch (error) {
-    alert(
-      `Error saving solution:\n${error.code || ""}\n${error.message || error}`,
-    );
+    console.error("Error saving solution:", error);
+    alert("Failed to submit solution.");
   }
 }
 
-// Submit solution form
-document
-  .getElementById("solutionForm")
+// Connect solution form to JavaScript
+document.getElementById("solutionForm")
   .addEventListener("submit", submitSolution);
 
-// Display Problems and Solutions
+
+// ==========================================
+// DISPLAY LATEST PROBLEMS AND SOLUTIONS
+// ==========================================
+
 async function displaySolutions() {
+
   const container = document.getElementById("problems-go-here");
   const template = document.getElementById("reviewTemplate");
 
+  // Clear previous cards
   container.innerHTML = "";
 
   try {
-    // Read solutions from Firebase
-    const querySnapshot = await getDocs(collection(db, "solutions"));
+    // Read solutions from Firestore
+    const querySnapshot = await getDocs(
+      collection(db, "solutions")
+    );
 
-    querySnapshot.forEach((doc) => {
-      const solution = doc.data();
+    if (querySnapshot.empty) {
+      container.textContent = "No solutions submitted yet.";
+      return;
+    }
 
+    // Convert documents into an array
+    const solutions = querySnapshot.docs.map(doc => doc.data());
+
+    // Sort newest first
+    solutions.sort((a, b) =>
+      (b.solutionTimestamp?.toMillis() || 0) -
+      (a.solutionTimestamp?.toMillis() || 0)
+    );
+
+    // Display each solution
+    solutions.forEach(solution => {
+
+      // Skip documents without the required fields
       if (!solution.problem || !solution.solution) {
         return;
       }
 
+      // Clone the HTML template
       const card = template.content.cloneNode(true);
 
       // Display problem
-      card.querySelector(".solution-problem").textContent = solution.problem;
+      card.querySelector(".solution-problem").textContent =
+        solution.problem;
 
-      // Display problem timestamp
+      // Display solution
+      card.querySelector(".solution-text").textContent =
+        solution.solution;
+
+      // Problem date
       const problemDate = solution.problemTimestamp
         ? solution.problemTimestamp.toDate().toLocaleString()
         : "Date unavailable";
 
-      card.querySelector(".problem-date").textContent = problemDate;
+      card.querySelector(".problem-date").textContent =
+        problemDate;
 
-      // Display solution
-      card.querySelector(".solution-text").textContent = solution.solution;
-
-      // Display solution timestamp
+      // Solution date
       const solutionDate = solution.solutionTimestamp
         ? solution.solutionTimestamp.toDate().toLocaleString()
         : "Date unavailable";
 
-      card.querySelector(".solution-date").textContent = solutionDate;
+      card.querySelector(".solution-date").textContent =
+        solutionDate;
 
       // Add card to webpage
       container.appendChild(card);
     });
+
   } catch (error) {
     console.error("Error loading solutions:", error);
+    container.textContent = "Failed to load solutions.";
   }
 }
 
-// Display saved solutions when page loads
+
+// ==========================================
+// LOAD DATA WHEN PAGE OPENS
+// ==========================================
+
 displaySolutions();

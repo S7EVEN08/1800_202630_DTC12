@@ -1,33 +1,45 @@
-import { doc, getDoc, enableNetwork } from "firebase/firestore";
+
+import {
+    doc,
+    getDoc,
+    updateDoc,
+    increment
+} from "firebase/firestore";
+
 import { db } from "./firebaseConfig.js";
-const guideRef = doc(db, "guides", "wSkeKV7ezkcEwA5ZL5Mg");
 
+// Reference to Bluetooth in HelpTopics
+const helpTopicRef = doc(db, "HelpTopics", "bluetooth");
 
+// Count views when someone opens the page
 async function displayGuideInfo() {
     try {
-        // Read the guide document
-        const guideSnap = await getDoc(guideRef);
+        const topicSnap = await getDoc(helpTopicRef);
 
-        if (guideSnap.exists()) {
-            const guide = guideSnap.data();
+        if (topicSnap.exists()) {
+            const topic = topicSnap.data();
 
-            // Increase views by 1 in Firestore
-            await updateDoc(guideRef, {
+            // Increase views in HelpTopics
+            await updateDoc(helpTopicRef, {
                 views: increment(1)
             });
 
-            // Display the updated view count
+            // Display the new number
             document.getElementById("viewCount").textContent =
-                (guide.views || 0) + 1;
+                (topic.views || 0) + 1;
 
         } else {
-            console.log("Guide not found!");
+            console.log("Bluetooth topic not found!");
         }
 
     } catch (error) {
-        console.error("Error updating views:", error);
+        console.error("Error updating Bluetooth views:", error);
     }
 }
+
+// Run when the page loads
+displayGuideInfo();
+
 
 const nextButton = document.getElementById("next-btn");
 const previousButton = document.getElementById("previous-btn");
@@ -36,6 +48,8 @@ const stepCounter = document.getElementById("step-counter");
 const stepTitle = document.getElementById("step-title");
 const stepDescription = document.getElementById("step-description");
 const stepIcon = document.getElementById("step-icon");
+const guideCard = document.getElementById("guide-card");
+const completeScreen = document.getElementById("complete-screen");
 
 let currentStep = 1;
 
@@ -61,27 +75,52 @@ const steps = [
 // Update the guide based on current step
 function updateStep() {
 
+    // Show completion screen after final step
+    if (currentStep > steps.length) {
+
+        // Hide the guide
+        guideCard.classList.add("d-none");
+
+        // Show completion screen
+        completeScreen.classList.remove("d-none");
+
+        return;
+    }
+
+    // Show normal guide steps
+    guideCard.classList.remove("d-none");
+    completeScreen.classList.add("d-none");
+
     const step = steps[currentStep - 1];
 
-    stepCounter.textContent = `Step ${currentStep} of ${steps.length}`;
+    stepCounter.textContent =
+        `Step ${currentStep} of ${steps.length}`;
 
     stepTitle.textContent = step.title;
     stepDescription.textContent = step.description;
 
-    // Change Bootstrap icon
+    // Change icon
     stepIcon.className = `bi ${step.icon}`;
 
-    // Disable buttons at first and last steps
+    // Disable Previous on Step 1
     previousButton.disabled = currentStep === 1;
-    nextButton.disabled = currentStep === steps.length;
+
+    // Change Next button text on the final step
+    if (currentStep === steps.length) {
+        nextButton.textContent = "Complete Guide";
+    } else {
+        nextButton.textContent = "Next";
+    }
 }
 
 // NEXT BUTTON
 nextButton.addEventListener("click", function () {
-    if (currentStep < steps.length) {
+
+    if (currentStep <= steps.length) {
         currentStep++;
         updateStep();
     }
+
 });
 
 // PREVIOUS BUTTON
