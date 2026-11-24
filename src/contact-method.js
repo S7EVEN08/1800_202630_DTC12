@@ -5,6 +5,10 @@ import { db } from "./firebaseConfig.js";
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("docID");
 
+// Go back to Ask for Help page
+const backButton = document.getElementById("backButton");
+backButton.href = "ask-for-help.html?docID=" + requestId;
+
 // Get the radio buttons
 const textMethod = document.getElementById("text-method");
 const phoneMethod = document.getElementById("phone-method");
